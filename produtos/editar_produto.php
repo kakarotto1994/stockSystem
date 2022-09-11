@@ -11,6 +11,7 @@ if(!isset($_SESSION)) {
     session_start();
 }
 try {
+    
     abstractValidation::validatelogged();
 
     $abstractValidation = new abstractValidation();
@@ -32,7 +33,7 @@ try {
 
 <body>
     <div class="form">
-    <form action="salvaProdutos.php" method="post">
+    <form action="salva_produtos.php" method="post">
         <p><label> Status: 
             <select name="status">
                 <?php if(!isset($status)) {$status = 1;} echo abstractValidation::generateSelectStatus($status)?>
@@ -40,6 +41,7 @@ try {
         </label></p>
         <p><label> Nome do Produto: <input type="text" name="descricao" <?php if(!empty($descricao)) {echo "value=$descricao";} ?> placeholder="Descricao do produto"> </label></p>
         <p><label> Valor do Produto: R$ <input type="number" min="1" step=".01" name="valor_produto" <?php if(!empty($valor_produto)) {echo "value=$valor_produto";} ?>></label> </p>
+        <p><label> Cod de Barras: <input type="number" name="ean" <?php if(!empty($ean)) {echo "value=$ean";} ?>></label> </p>
         <input type="hidden" name="id" <?php if(isset($id)) {echo "value=$id";}?>>
         <button type="submit">Salvar</button>
     </form>

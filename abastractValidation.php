@@ -80,38 +80,56 @@ class abstractValidation  {
     {
         try{
             $mysqli = $this->mysqli;
-            $query = "INSERT IGNORE INTO $table (".implode(',', $data).") VALUES (";
+            $query = "INSERT IGNORE INTO $table (".implode(',', array_keys($data)).") VALUES (".implode(',', $data)." )";
             $columns = $this->getColumns($table);
-            $dataValues = [];
-            foreach($data as $nameColumn => $value) {
-                foreach($columns as $column) {
-                    if($nameColumn == $column) {
-                        $dataValues[] = $value;
-                        break;
-                    }
-                }
-            }
+            // var_dump($columns);
+            // $dataValues = [];
+            // foreach($data as $nameColumn => $value) {
+            //     foreach($columns as $column) {  
+            //         var_dump('OPA', $column["COLUMN_NAME"], 'coluna query', $nameColumn);
+            //         if($nameColumn == $column["COLUMN_NAME"]) {
+            //             $dataValues[] = $value;
+            //             break;
+            //         }
+            //     }
+            // }
 
-            $query .= implode(",", $dataValues).");";
+            // $query .= implode(",", $dataValues).");";
             $mysqli->query($query) or die("ERRO: ".$mysqli->error);
         } catch (\Exception $e) {
             throw $e->getMessage();
         }
     }
 
-    protected function updateData ($table, Array $data) {
+    protected function updateData ($table, Array $data) 
+    {
+        $mysqli = $this->mysqli;
+        $id = $data['id'];
+        unset($data['id']);
+        $query = "UPDATE $table set ";
+        $setValues= [];
+        foreach($data as $key => $value) {
+            $setValues[] = "$key = $value ";
+        }
 
+        $where = " where id = $id";
+        $query.= implode(',',$setValues).$where;
+        $mysqli->query($query) or die("ERRO: ".$mysqli->error);
     }
 
-    protected function getColumns($table) {
+    protected function getColumns($table) 
+    {
         $query = "SELECT COLUMN_NAME from information_schema.columns
-        where TABLE_NAME = $table";
+        where TABLE_NAME = '$table' limit 2000; ";
         $mysqli = $this->mysqli;
-        $response = $mysqli->query($query) or die("ERRO: ".$mysqli->error);
+        $responses = $mysqli->query($query) or die("ERRO: ".$mysqli->error);
 
-        if($response->num_rows > 0) {
-            $response = $response->fetch_assoc();
-            return $response;
+        if($responses->num_rows > 0) {
+            $fullResponse = [];
+            while($fullResponse[] = $responses->fetch_assoc()) {
+            }
+            var_dump('getColumns', $fullResponse, $query);
+            return $fullResponse;
         } else {
             throw new Exception(" Dados não encontrados na table $table ");
         }

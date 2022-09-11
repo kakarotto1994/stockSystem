@@ -1,7 +1,7 @@
 <?php
 
 require_once "../abastractValidation.php";
-phpinfo();
+// phpinfo();
 
 if(!isset($_SESSION)) {
     session_start();
@@ -10,17 +10,17 @@ if(!isset($_SESSION)) {
 class salvaProdutos extends abstractValidation  {
     const TABLE_NAME = 'produtos';
 
-    public function __construct() {
-        extract($_POST);
+    public function __construct($data) {
+        parent::__construct();
+        extract($data);
         try{
             if(empty($descricao) || empty($valor_produto)) {
                 throw new \Exception("Nome do produto ou valor do produto invalidos");
             }
-            header('Location: /login.php');
-            self::inputData(self::TABLE_NAME, $_POST);
-            echo "cadastrado com sucesso";
+            $this->inputData(self::TABLE_NAME, $data);
+            return "cadastrado com sucesso";
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
         }
 
     }
