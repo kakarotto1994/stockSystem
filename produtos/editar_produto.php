@@ -21,7 +21,6 @@ try {
         $produtos = $abstractValidation->find(TABLE_NAME, $_GET['id']);
         extract($produtos);
         echo "<h2> Atualizar Produto </h2>";
-        var_dump( $status);
     } else {
         echo "<h2> Criar Produto </h2>";
     }

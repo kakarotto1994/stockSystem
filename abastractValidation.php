@@ -50,6 +50,50 @@ class abstractValidation  {
         }
     } 
 
+    /**
+     * Busca todo os itens atraves do nome da tabela e o algumas colunas
+    */
+    public function findByColumn($table, $where, $limit = null) 
+    {
+        try{ 
+            $mysqli = $this->mysqli;
+            
+            $query = "SELECT * FROM $table where 1 = 1 ";
+            $query .= $where;
+            $query .= " group by id ";
+            if(!empty($limit)) {
+                $query .= " limit ". implode(',', $limit);
+            }
+            $responseQuery = $mysqli->query($query) or die("ERRO: ".$mysqli->error);
+            $response = [];
+            while($response[] = $responseQuery->fetch_assoc()){
+
+            }
+            return $response;
+        } catch (\Exception $e) {
+            throw $e->getMessage();
+        }
+    }
+
+    public function findCount($table) 
+    {
+        try{ 
+            $mysqli = $this->mysqli;
+            
+            $query = "SELECT count(id) as total FROM $table where 1 = 1 ";
+            $responseQuery = $mysqli->query($query) or die("ERRO: ".$mysqli->error);
+
+            return $responseQuery->fetch_assoc();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function getPagination($table) 
+    {
+        return $this->findCount($table);
+    }
+
     public static function generateSelectStatus($status = 1,Array $dataStatus = [1,0]) {
         $option = "";
         foreach ($dataStatus as $data) {
@@ -128,7 +172,6 @@ class abstractValidation  {
             $fullResponse = [];
             while($fullResponse[] = $responses->fetch_assoc()) {
             }
-            var_dump('getColumns', $fullResponse, $query);
             return $fullResponse;
         } else {
             throw new Exception(" Dados não encontrados na table $table ");

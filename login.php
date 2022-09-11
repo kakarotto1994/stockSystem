@@ -10,8 +10,6 @@ if( isset($_SESSION['logado']) ){
 	header('Location: index.php');
 }
 
-var_dump($host);
-
 $mysqli = new mysqli($host, $user, $pass, $db);
 if($mysqli->connect_errno) {
     die("ERRO $mysqli->connect_errno, $mysqli->connect_error");
