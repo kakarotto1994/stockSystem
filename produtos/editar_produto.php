@@ -38,7 +38,7 @@ try {
                 <?php if(!isset($status)) {$status = 1;} echo abstractValidation::generateSelectStatus($status)?>
             </select>
         </label></p>
-        <p><label> Nome do Produto: <input type="text" name="descricao" <?php if(!empty($descricao)) {echo "value=$descricao";} ?> placeholder="Descricao do produto"> </label></p>
+        <p><label> Nome do Produto: <input type="text" name="descricao" <?php if(!empty($descricao)) {echo "value='$descricao'";} ?> placeholder="Descricao do produto"> </label></p>
         <p><label> Valor do Produto: R$ <input type="number" min="1" step=".01" name="valor_produto" <?php if(!empty($valor_produto)) {echo "value=$valor_produto";} ?>></label> </p>
         <p><label> Cod de Barras: <input type="number" name="ean" <?php if(!empty($ean)) {echo "value=$ean";} ?>></label> </p>
         <input type="hidden" name="id" <?php if(isset($id)) {echo "value=$id";}?>>
