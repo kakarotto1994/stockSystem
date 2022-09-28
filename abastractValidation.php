@@ -124,6 +124,11 @@ class abstractValidation  {
     {
         try{
             $mysqli = $this->mysqli;
+            foreach ($data as $nameColumn => $column){
+                if(is_null($column) || $column == ''){
+                    unset($data[$nameColumn]);
+                }
+            }
             $query = "INSERT IGNORE INTO $table (".implode(',', array_keys($data)).") VALUES (".implode(',', $data)." )";
             $columns = $this->getColumns($table);
             // var_dump($columns);
@@ -153,12 +158,15 @@ class abstractValidation  {
         $query = "UPDATE $table set ";
         $setValues= [];
         foreach($data as $key => $value) {
+            if(is_null($value) || $value == ''){
+                continue;
+            }
             $setValues[] = "$key = $value ";
         }
 
         $where = " where id = $id";
         $query.= implode(',',$setValues).$where;
-        $mysqli->query($query) or die("ERRO: ".$mysqli->error);
+        $mysqli->query($query) or die("ERRO: ".$mysqli->error."<br>".$query);
     }
 
     protected function getColumns($table) 

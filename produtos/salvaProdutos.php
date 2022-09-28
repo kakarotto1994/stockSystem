@@ -20,7 +20,7 @@ class salvaProdutos extends abstractValidation  {
             $this->inputData(self::TABLE_NAME, $data);
             return "cadastrado com sucesso";
         } catch (\Exception $e) {
-            return $e->getMessage();
+            throw new \Exception($e->getMessage());
         }
 
     }

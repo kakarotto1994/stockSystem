@@ -8,8 +8,9 @@ try {
     echo 'Cadastrado com sucesso';
     sleep(1);
     header('Location: visualiza_produtos.php');
-} catch (\Exception $e) { 
-    echo $e;
+} catch (\Exception $e) {
+    echo $e->getMessage(); 
+    echo "<script type='javascript'> alert(".$e->getMessage().") </script>";
 }
 
 ?>
